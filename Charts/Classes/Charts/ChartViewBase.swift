@@ -20,22 +20,37 @@ import CoreGraphics
     import UIKit
 #endif
 
-@objc
-public protocol ChartViewDelegate
-{
-    /// Called when a value has been selected inside the chart.
-    /// - parameter entry: The selected Entry.
-    /// - parameter dataSetIndex: The index in the datasets array of the data object the Entrys DataSet is in.
-    optional func chartValueSelected(chartView: ChartViewBase, entry: ChartDataEntry, dataSetIndex: Int, highlight: ChartHighlight)
-    
-    // Called when nothing has been selected or an "un-select" has been made.
-    optional func chartValueNothingSelected(chartView: ChartViewBase)
-    
-    // Callbacks when the chart is scaled / zoomed via pinch zoom gesture.
-    optional func chartScaled(chartView: ChartViewBase, scaleX: CGFloat, scaleY: CGFloat)
-    
-    // Callbacks when the chart is moved / translated via drag gesture.
-    optional func chartTranslated(chartView: ChartViewBase, dX: CGFloat, dY: CGFloat)
+//@objc
+//public protocol ChartViewDelegate
+//{
+//    /// Called when a value has been selected inside the chart.
+//    /// - parameter entry: The selected Entry.
+//    /// - parameter dataSetIndex: The index in the datasets array of the data object the Entrys DataSet is in.
+//    optional func chartValueSelected(chartView: ChartViewBase, entry: ChartDataEntry, dataSetIndex: Int, highlight: ChartHighlight)
+//    
+//    // Called when nothing has been selected or an "un-select" has been made.
+//    optional func chartValueNothingSelected(chartView: ChartViewBase)
+//    
+//    // Callbacks when the chart is scaled / zoomed via pinch zoom gesture.
+//    optional func chartScaled(chartView: ChartViewBase, scaleX: CGFloat, scaleY: CGFloat)
+//    
+//    // Callbacks when the chart is moved / translated via drag gesture.
+//    optional func chartTranslated(chartView: ChartViewBase, dX: CGFloat, dY: CGFloat)
+//}
+public protocol ChartViewDelegate: class {
+  /// Called when a value has been selected inside the chart.
+  /// - parameter entry: The selected Entry.
+  /// - parameter dataSetIndex: The index in the datasets array of the data object the Entrys DataSet is in.
+  func chartValueSelected(chartView: ChartViewBase, entry: ChartDataEntry, dataSetIndex: Int, highlight: ChartHighlight) -> Void
+  
+  // Called when nothing has been selected or an "un-select" has been made.
+  func chartValueNothingSelected(chartView: ChartViewBase) -> Void
+  
+  // Callbacks when the chart is scaled / zoomed via pinch zoom gesture.
+  func chartScaled(chartView: ChartViewBase, scaleX: CGFloat, scaleY: CGFloat) -> Void
+  
+  // Callbacks when the chart is moved / translated via drag gesture.
+  func chartTranslated(chartView: ChartViewBase, dX: CGFloat, dY: CGFloat) -> Void
 }
 
 public class ChartViewBase: NSUIView, ChartDataProvider, ChartAnimatorDelegate
@@ -494,12 +509,12 @@ public class ChartViewBase: NSUIView, ChartDataProvider, ChartAnimatorDelegate
         {
             if (h == nil)
             {
-                delegate!.chartValueNothingSelected?(self)
+                delegate!.chartValueNothingSelected(self)
             }
             else
             {
                 // notify the listener
-                delegate!.chartValueSelected?(self, entry: entry!, dataSetIndex: h!.dataSetIndex, highlight: h!)
+                delegate!.chartValueSelected(self, entry: entry!, dataSetIndex: h!.dataSetIndex, highlight: h!)
             }
         }
         
